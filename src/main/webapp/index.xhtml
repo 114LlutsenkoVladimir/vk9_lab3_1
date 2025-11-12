@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Applicant Form</title>
+</h:head>
+
+<h:body>
+    <h:form id="findApplicantByIdForm">
+        <p:outputLabel for="findApplicantIdInput">find applicant id:</p:outputLabel>
+        <p:inputText id="findApplicantIdInput" value="#{applicantBean.selectedApplicantId}" p:type="number"/>
+        <h:commandButton value="Find"
+                         action="#{applicantBean.findApplicantById}" />
+    </h:form>
+
+    <h:form id="deleteApplicantByIdForm">
+        <p:outputLabel for="deleteApplicantIdInput">delete applicant id:</p:outputLabel>
+        <p:inputText id="deleteApplicantIdInput" value="#{applicantBean.selectedApplicantId}" p:type="number"/>
+        <h:commandButton value="Delete"
+                         action="#{applicantBean.deleteApplicant()}" />
+    </h:form>
+
+    <h:form id="updateApplicantByIdForm">
+        <p:outputLabel for="updateApplicantIdInput">id:</p:outputLabel>
+        <p:inputText id="updateApplicantIdInput" value="#{applicantBean.selectedApplicantId}" p:type="number"/>
+
+        <p:outputLabel for="updateApplicantFirstNameInput">first name:</p:outputLabel>
+        <p:inputText id="updateApplicantFirstNameInput" value="#{applicantBean.form.firstName}" />
+
+        <p:outputLabel for="updateApplicantLastNameInput">last name:</p:outputLabel>
+        <p:inputText id="updateApplicantLastNameInput" value="#{applicantBean.form.lastName}" />
+
+        <p:outputLabel for="updateApplicantAverageMarkInput">average mark:</p:outputLabel>
+        <p:inputText id="updateApplicantAverageMarkInput" value="#{applicantBean.form.averageMark}"
+                     p:type="number" p:step="0.01"/>
+
+        <p:outputLabel for="updateApplicantBirthDateInput">birth date:</p:outputLabel>
+        <p:datePicker id="updateApplicantBirthDateInput" value="#{applicantBean.form.birthDate}" />
+        <p:commandButton value="Update"
+                         action="#{applicantBean.updateApplicant()}" />
+    </h:form>
+
+    <p:selectOneMenu value="#{applicantBean.selectedSpecialtyId}">
+        <f:selectItem itemLabel="-- оберіть спеціальність --" itemValue="#{null}" />
+        <f:selectItems value="#{applicantBean.allSpecialties}"
+                       var="s"
+                       itemValue="#{s.id}"
+                       itemLabel="#{s.name}" />
+
+        <!-- событие выбора -->
+        <p:ajax event="valueChange"
+                listener="#{applicantBean.updateDataTableBySpecialtyId()}"
+                update="dataTable" />
+    </p:selectOneMenu>
+
+    <p:dataTable id="dataTable" value="#{applicantBean.dataTableList}" var="a">
+        <p:column headerText="Прізвище">#{a.firstName()}</p:column>
+        <p:column headerText="Ім'я">#{a.lastName()}</p:column>
+    </p:dataTable>
+
+
+
+</h:body>
+
+
+</html>

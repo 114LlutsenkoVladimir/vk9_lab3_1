@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <persistence-unit name="default" transaction-type="JTA">
+        <!-- имя ресурса, который создаём ниже -->
+        <jta-data-source>jdbc/mysql_lab</jta-data-source>
+
+        <!-- все твои сущности -->
+        <class>com.example.lab3_vk9_1.entity.Applicant</class>
+        <class>com.example.lab3_vk9_1.entity.Specialty</class>
+        <class>com.example.lab3_vk9_1.entity.SpecialtyForApplicant</class>
+        <class>com.example.lab3_vk9_1.entity.Subject</class>
+        <class>com.example.lab3_vk9_1.entity.SubjectForSpecialty</class>
+
+        <properties>
+            <!-- Не пересоздавать таблицы -->
+            <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
+            <!-- Лог SQL в консоль -->
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>
