@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "applicant")
@@ -31,6 +33,9 @@ public class Applicant {
     @NotNull
     @Column(name = "average_mark", nullable = false)
     private Double averageMark;
+
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<SpecialtyForApplicant> specialties = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -70,6 +75,14 @@ public class Applicant {
 
     public void setAverageMark(Double averageMark) {
         this.averageMark = averageMark;
+    }
+
+    public Set<SpecialtyForApplicant> getSpecialties() {
+        return specialties;
+    }
+
+    public void setSpecialties(Set<SpecialtyForApplicant> specialties) {
+        this.specialties = specialties;
     }
 
     public void copy(Applicant applicant) {

@@ -21,6 +21,17 @@ public class SpecialtyForApplicant {
     @JoinColumn(name = "applicant_id", nullable = false)
     private Applicant applicant;
 
+    @Column(name = "priority", nullable = false)
+    private Integer priority;
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
     public Long getId() {
         return id;
     }

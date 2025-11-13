@@ -15,7 +15,7 @@ public class ApplicantRepository extends GenericRepository<Applicant, Long> {
     public List<ApplicantBySpecialtyDto> findAllBySpecialty(Long specialtyId) {
         return em.createQuery("""
         SELECT new com.example.lab3_vk9_1.dto.applicant.ApplicantBySpecialtyDto(
-            a.id, a.firstName, a.lastName, s.id, s.name
+            a.id, a.firstName, a.lastName, a.birthDate, a.averageMark, s.id, s.name
         )
         FROM SpecialtyForApplicant sfa
         JOIN sfa.applicant a
@@ -29,7 +29,7 @@ public class ApplicantRepository extends GenericRepository<Applicant, Long> {
     public List<ApplicantBySpecialtyDto> findAllApplicantSpecialties(Long applicantId) {
         return em.createQuery("""
         SELECT new com.example.lab3_vk9_1.dto.applicant.ApplicantBySpecialtyDto(
-            a.id, a.firstName, a.lastName, s.id, s.name
+            a.id, a.firstName, a.lastName, a.birthDate, a.averageMark, s.id, s.name
         )
         FROM SpecialtyForApplicant sfa
         JOIN sfa.applicant a

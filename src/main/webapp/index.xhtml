@@ -10,6 +10,16 @@
 </h:head>
 
 <h:body>
+    <h:form id="createApplicantByIdForm">
+        <p:outputLabel for="findApplicantIdInput">find applicant id:</p:outputLabel>
+        <p:inputText id="createApplicantFirstNameInput" value="#{applicantBean.form.firstName}"/>
+        <p:inputText id="createApplicantFirstNameInput" value="#{applicantBean.form.lastName}"/>
+        <p:datePicker id="createApplicantFirstNameInput" value="#{applicantBean.form.birthDate}"/>
+        <p:inputText id="createApplicantFirstNameInput" value="#{applicantBean.form.averageMark}" p:type="number" p:step="0.01"/>
+        <h:commandButton value="Create"
+                         action="#{applicantBean.createApplicant()}" />
+    </h:form>
+
     <h:form id="findApplicantByIdForm">
         <p:outputLabel for="findApplicantIdInput">find applicant id:</p:outputLabel>
         <p:inputText id="findApplicantIdInput" value="#{applicantBean.selectedApplicantId}" p:type="number"/>
@@ -44,23 +54,28 @@
                          action="#{applicantBean.updateApplicant()}" />
     </h:form>
 
-    <p:selectOneMenu value="#{applicantBean.selectedSpecialtyId}">
-        <f:selectItem itemLabel="-- оберіть спеціальність --" itemValue="#{null}" />
-        <f:selectItems value="#{applicantBean.allSpecialties}"
-                       var="s"
-                       itemValue="#{s.id}"
-                       itemLabel="#{s.name}" />
+    <h:form id="selectSpecialtyForm">
+        <p:selectOneMenu value="#{applicantBean.selectedSpecialtyId}">
+            <f:selectItems value="#{applicantBean.allSpecialties}"
+                           var="s"
+                           itemValue="#{s.id}"
+                           itemLabel="#{s.name}" />
 
-        <!-- событие выбора -->
-        <p:ajax event="valueChange"
-                listener="#{applicantBean.updateDataTableBySpecialtyId()}"
-                update="dataTable" />
-    </p:selectOneMenu>
+            <!-- событие выбора -->
+            <p:ajax event="valueChange"
+                    listener="#{applicantBean.updateDataTableBySpecialtyId()}"
+                    update="dataTable" />
+        </p:selectOneMenu>
 
-    <p:dataTable id="dataTable" value="#{applicantBean.dataTableList}" var="a">
-        <p:column headerText="Прізвище">#{a.firstName()}</p:column>
-        <p:column headerText="Ім'я">#{a.lastName()}</p:column>
-    </p:dataTable>
+        <p:dataTable id="dataTable" value="#{applicantBean.dataTableList}" var="a">
+            <p:column headerText="id">#{a.applicantId()}</p:column>
+            <p:column headerText="Ім'я">#{a.firstName()}</p:column>
+            <p:column headerText="Прізвище">#{a.lastName()}</p:column>
+            <p:column headerText="Дата народження">#{a.birthDate()}</p:column>
+            <p:column headerText="Середній бал ат.">#{a.averageMark()}</p:column>
+            <p:column headerText="Спеціальність">#{a.specialtyName()}</p:column>
+        </p:dataTable>
+    </h:form>
 
 
 
