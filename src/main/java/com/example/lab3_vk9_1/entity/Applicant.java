@@ -85,6 +85,8 @@ public class Applicant {
         this.specialties = specialties;
     }
 
+    public void addSpecialty(SpecialtyForApplicant sfa) { specialties.add(sfa); }
+
     public void copy(Applicant applicant) {
         this.firstName = applicant.getFirstName();
         this.lastName = applicant.getLastName();

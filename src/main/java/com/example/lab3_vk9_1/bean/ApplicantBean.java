@@ -24,12 +24,6 @@ public class ApplicantBean implements Serializable {
     @Inject
     private SpecialtyService specialtyService;
 
-    @Inject
-    public ApplicantBean(ApplicantService applicantService,
-                         SpecialtyService specialtyService) {
-        this.applicantService = applicantService;
-        this.specialtyService = specialtyService;
-    }
 
     public ApplicantBean() {
     }
@@ -44,6 +38,13 @@ public class ApplicantBean implements Serializable {
 
     private List<Long> selectedSpecialtyIds = new ArrayList<>();
 
+    public List<Long> getSelectedSpecialtyIds() {
+        return selectedSpecialtyIds;
+    }
+
+    public void setSelectedSpecialtyIds(List<Long> selectedSpecialtyIds) {
+        this.selectedSpecialtyIds = selectedSpecialtyIds;
+    }
 
     public void setSelectedApplicantId(Long selectedApplicantId) {
         this.selectedApplicantId = selectedApplicantId;
@@ -82,10 +83,12 @@ public class ApplicantBean implements Serializable {
     }
 
     public void updateApplicant() {
-        Applicant applicant = applicantService.findById(selectedApplicantId);
-        applicant.copy(form);
-        applicantService.update(applicant);
-        selectedSpecialtyId = null;
+        Applicant dbApplicant = applicantService.findById(selectedApplicantId);
+        dbApplicant.copy(form);
+        applicantService.update(dbApplicant);
+        dataTableList = applicantService.findAllApplicantSpecialties(selectedApplicantId);
+        selectedApplicantId = null;
+        form = new Applicant();
     }
 
     public void updateDataTableBySpecialtyId() {

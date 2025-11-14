@@ -7,21 +7,19 @@ import com.example.lab3_vk9_1.entity.SpecialtyForApplicant;
 import com.example.lab3_vk9_1.repository.ApplicantRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @ApplicationScoped
+@Transactional
 public class ApplicantService extends AbstractCrudService<Applicant, Long, ApplicantRepository> {
 
     @Inject
     private SpecialtyService specialtyService;
 
-    @Inject
-    public ApplicantService(SpecialtyService specialtyService) {
-        this.specialtyService = specialtyService;
-    }
 
     public List<ApplicantBySpecialtyDto> findAllApplicantSpecialties(Long applicantId) {
         return repository.findAllApplicantSpecialties(applicantId);
@@ -40,6 +38,7 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
             SpecialtyForApplicant sfa = new SpecialtyForApplicant();
             sfa.setApplicant(applicant);
             sfa.setSpecialty(s);
+            applicant.addSpecialty(sfa);
         }
     }
 }

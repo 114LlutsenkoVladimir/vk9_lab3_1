@@ -21,8 +21,8 @@ public class SpecialtyForApplicant {
     @JoinColumn(name = "applicant_id", nullable = false)
     private Applicant applicant;
 
-    @Column(name = "priority", nullable = false)
-    private Integer priority;
+    @Column(name = "priority")
+    private Integer priority = 0;
 
     public Integer getPriority() {
         return priority;

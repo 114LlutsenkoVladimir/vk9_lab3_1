@@ -2,6 +2,7 @@ package com.example.lab3_vk9_1.service;
 
 import com.example.lab3_vk9_1.repository.GenericRepository;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class AbstractCrudService<T, ID, RP extends GenericRepository<T, ID>> {
         return repository.findAll();
     }
 
+    @Transactional
     public T update(T entity) {
         return repository.update(entity);
     }

@@ -7,76 +7,226 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>Applicant Form</title>
+    <h:outputStylesheet library="css" name="style.css"/>
 </h:head>
 
 <h:body>
-    <h:form id="createApplicantByIdForm">
-        <p:outputLabel for="findApplicantIdInput">find applicant id:</p:outputLabel>
-        <p:inputText id="createApplicantFirstNameInput" value="#{applicantBean.form.firstName}"/>
-        <p:inputText id="createApplicantFirstNameInput" value="#{applicantBean.form.lastName}"/>
-        <p:datePicker id="createApplicantFirstNameInput" value="#{applicantBean.form.birthDate}"/>
-        <p:inputText id="createApplicantFirstNameInput" value="#{applicantBean.form.averageMark}" p:type="number" p:step="0.01"/>
-        <h:commandButton value="Create"
-                         action="#{applicantBean.createApplicant()}" />
-    </h:form>
 
-    <h:form id="findApplicantByIdForm">
-        <p:outputLabel for="findApplicantIdInput">find applicant id:</p:outputLabel>
-        <p:inputText id="findApplicantIdInput" value="#{applicantBean.selectedApplicantId}" p:type="number"/>
-        <h:commandButton value="Find"
-                         action="#{applicantBean.findApplicantById}" />
-    </h:form>
+    <h:body>
 
-    <h:form id="deleteApplicantByIdForm">
-        <p:outputLabel for="deleteApplicantIdInput">delete applicant id:</p:outputLabel>
-        <p:inputText id="deleteApplicantIdInput" value="#{applicantBean.selectedApplicantId}" p:type="number"/>
-        <h:commandButton value="Delete"
-                         action="#{applicantBean.deleteApplicant()}" />
-    </h:form>
+        <div class="forms-row">
 
-    <h:form id="updateApplicantByIdForm">
-        <p:outputLabel for="updateApplicantIdInput">id:</p:outputLabel>
-        <p:inputText id="updateApplicantIdInput" value="#{applicantBean.selectedApplicantId}" p:type="number"/>
+            <h:form id="createApplicantForm" styleClass="form-card">
+                <table class="app-table">
+                    <tr>
+                        <td class="label">
+                            <p:outputLabel for="fn" value="Ім'я:"/>
+                        </td>
+                        <td>
+                            <p:inputText id="fn" value="#{applicantBean.form.firstName}"/>
+                        </td>
+                    </tr>
 
-        <p:outputLabel for="updateApplicantFirstNameInput">first name:</p:outputLabel>
-        <p:inputText id="updateApplicantFirstNameInput" value="#{applicantBean.form.firstName}" />
+                    <tr>
+                        <td class="label">
+                            <p:outputLabel for="ln" value="Прізвище:"/>
+                        </td>
+                        <td>
+                            <p:inputText id="ln" value="#{applicantBean.form.lastName}"/>
+                        </td>
+                    </tr>
 
-        <p:outputLabel for="updateApplicantLastNameInput">last name:</p:outputLabel>
-        <p:inputText id="updateApplicantLastNameInput" value="#{applicantBean.form.lastName}" />
+                    <tr>
+                        <td class="label">
+                            <p:outputLabel for="bd" value="Дата народження:"/>
+                        </td>
+                        <td>
+                            <p:datePicker id="bd" value="#{applicantBean.form.birthDate}"/>
+                        </td>
+                    </tr>
 
-        <p:outputLabel for="updateApplicantAverageMarkInput">average mark:</p:outputLabel>
-        <p:inputText id="updateApplicantAverageMarkInput" value="#{applicantBean.form.averageMark}"
-                     p:type="number" p:step="0.01"/>
+                    <tr>
+                        <td class="label">
+                            <p:outputLabel for="am" value="Середній бал атестата:"/>
+                        </td>
+                        <td>
+                            <p:inputNumber id="am"
+                                           value="#{applicantBean.form.averageMark}"
+                                           minValue="0"
+                                           maxValue="12"
+                                           decimalPlaces="2"/>
+                        </td>
+                    </tr>
 
-        <p:outputLabel for="updateApplicantBirthDateInput">birth date:</p:outputLabel>
-        <p:datePicker id="updateApplicantBirthDateInput" value="#{applicantBean.form.birthDate}" />
-        <p:commandButton value="Update"
-                         action="#{applicantBean.updateApplicant()}" />
-    </h:form>
+                    <tr>
+                        <td class="label" style="vertical-align: top;">
+                            <p:outputLabel for="spec" value="Спеціальності:"/>
+                        </td>
+                        <td>
+                            <p:selectManyCheckbox id="spec"
+                                                  value="#{applicantBean.selectedSpecialtyIds}"
+                                                  layout="pageDirection"
+                                                  styleClass="specialties-checkboxes">
+                                <f:selectItems value="#{applicantBean.allSpecialties}"
+                                               var="s"
+                                               itemValue="#{s.id}"
+                                               itemLabel="#{s.name}"/>
+                            </p:selectManyCheckbox>
+                        </td>
+                    </tr>
 
-    <h:form id="selectSpecialtyForm">
-        <p:selectOneMenu value="#{applicantBean.selectedSpecialtyId}">
-            <f:selectItems value="#{applicantBean.allSpecialties}"
-                           var="s"
-                           itemValue="#{s.id}"
-                           itemLabel="#{s.name}" />
+                    <tr>
+                        <td></td>
+                        <td>
+                            <p:commandButton value="Create"
+                                             action="#{applicantBean.createApplicant()}"
+                                             process="@form"
+                                             update=":selectSpecialtyForm:dataTable"
+                                             styleClass="btn-primary" />
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
 
-            <!-- событие выбора -->
-            <p:ajax event="valueChange"
-                    listener="#{applicantBean.updateDataTableBySpecialtyId()}"
-                    update="dataTable" />
-        </p:selectOneMenu>
+            <h:form id="updateApplicantByIdForm" styleClass="form-card">
+                <p:panelGrid columns="2"
+                             styleClass="form-grid"
+                             columnClasses="form-label,form-input">
 
-        <p:dataTable id="dataTable" value="#{applicantBean.dataTableList}" var="a">
-            <p:column headerText="id">#{a.applicantId()}</p:column>
-            <p:column headerText="Ім'я">#{a.firstName()}</p:column>
-            <p:column headerText="Прізвище">#{a.lastName()}</p:column>
-            <p:column headerText="Дата народження">#{a.birthDate()}</p:column>
-            <p:column headerText="Середній бал ат.">#{a.averageMark()}</p:column>
-            <p:column headerText="Спеціальність">#{a.specialtyName()}</p:column>
-        </p:dataTable>
-    </h:form>
+                    <p:outputLabel for="updateApplicantIdInput" value="ID:"/>
+                    <p:inputNumber id="updateApplicantIdInput"
+                                   value="#{applicantBean.selectedApplicantId}"/>
 
+                    <p:outputLabel for="updateApplicantFirstNameInput" value="First name:"/>
+                    <p:inputText id="updateApplicantFirstNameInput"
+                                 value="#{applicantBean.form.firstName}"
+                                 styleClass="form-input"/>
+
+                    <p:outputLabel for="updateApplicantLastNameInput" value="Last name:"/>
+                    <p:inputText id="updateApplicantLastNameInput"
+                                 value="#{applicantBean.form.lastName}"
+                                 styleClass="form-input"/>
+
+                    <p:outputLabel for="updateApplicantAverageMarkInput" value="Average mark:"/>
+                    <p:inputNumber id="updateApplicantAverageMarkInput"
+                                   value="#{applicantBean.form.averageMark}"
+                                   minValue="0"
+                                   maxValue="12"
+                                   decimalPlaces="2"/>
+
+                    <p:outputLabel for="updateApplicantBirthDateInput" value="Birth date:"/>
+                    <p:datePicker id="updateApplicantBirthDateInput"
+                                  value="#{applicantBean.form.birthDate}"/>
+
+                    <h:panelGroup/>
+                    <p:commandButton value="Update"
+                                     action="#{applicantBean.updateApplicant()}"
+                                     process="@form"
+                                     update=":selectSpecialtyForm:dataTable"
+                                     styleClass="btn-primary" />
+
+                </p:panelGrid>
+            </h:form>
+
+            <h:form id="findApplicantByIdForm" styleClass="form-card">
+                <p:panelGrid columns="2"
+                             styleClass="form-grid-small"
+                             columnClasses="form-label,form-input">
+
+                    <p:outputLabel for="findApplicantIdInput" value="ID абітурієнта:"/>
+                    <p:inputNumber id="findApplicantIdInput"
+                                   value="#{applicantBean.selectedApplicantId}"/>
+
+                    <h:panelGroup/>
+                    <p:commandButton value="Find"
+                                     action="#{applicantBean.findApplicantById()}"
+                                     process="@form"
+                                     update=":selectSpecialtyForm:dataTable"
+                                     styleClass="btn-primary" />
+
+                </p:panelGrid>
+            </h:form>
+
+            <h:form id="deleteApplicantByIdForm" styleClass="form-card">
+                <p:panelGrid columns="2"
+                             styleClass="form-grid-small"
+                             columnClasses="form-label,form-input">
+
+                    <p:outputLabel for="deleteApplicantIdInput" value="Delete applicant ID:"/>
+                    <p:inputNumber id="deleteApplicantIdInput"
+                                   value="#{applicantBean.selectedApplicantId}"/>
+
+                    <h:panelGroup/>
+                    <p:commandButton value="Delete"
+                                     action="#{applicantBean.deleteApplicant()}"
+                                     process="@form"
+                                     update=":selectSpecialtyForm:dataTable"
+                                     styleClass="btn-primary" />
+
+                </p:panelGrid>
+            </h:form>
+
+        </div>
+
+        <h:form id="selectSpecialtyForm">
+            <p:panelGrid columns="2"
+                         styleClass="form-grid"
+                         columnClasses="form-label,form-input">
+
+                <p:outputLabel value="Select specialty:" for="specialtyMenu"/>
+
+                <p:selectOneMenu id="specialtyMenu"
+                                 value="#{applicantBean.selectedSpecialtyId}"
+                                 styleClass="form-input">
+
+                    <f:selectItems value="#{applicantBean.allSpecialties}"
+                                   var="s"
+                                   itemValue="#{s.id}"
+                                   itemLabel="#{s.name}"/>
+
+                    <p:ajax event="valueChange"
+                            listener="#{applicantBean.updateDataTableBySpecialtyId()}"
+                            update="dataTable"/>
+                </p:selectOneMenu>
+
+            </p:panelGrid>
+
+            <p:dataTable id="dataTable"
+                         value="#{applicantBean.dataTableList}"
+                         var="a"
+                         styleClass="styled-table"
+                         paginator="true"
+                         rows="5"
+                         responsiveLayout="scroll">
+
+                <p:column headerText="ID">
+                    #{a.applicantId()}
+                </p:column>
+
+                <p:column headerText="Ім'я">
+                    #{a.firstName()}
+                </p:column>
+
+                <p:column headerText="Прізвище">
+                    #{a.lastName()}
+                </p:column>
+
+                <p:column headerText="Дата народження">
+                    #{a.birthDate()}
+                </p:column>
+
+                <p:column headerText="Середній бал ат.">
+                    #{a.averageMark()}
+                </p:column>
+
+                <p:column headerText="Спеціальність">
+                    #{a.specialtyName()}
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
 
 
 </h:body>
