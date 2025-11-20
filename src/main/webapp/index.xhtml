@@ -194,10 +194,7 @@
             <p:dataTable id="dataTable"
                          value="#{applicantBean.dataTableList}"
                          var="a"
-                         styleClass="styled-table"
-                         paginator="true"
-                         rows="5"
-                         responsiveLayout="scroll">
+                         styleClass="styled-table">
 
                 <p:column headerText="ID">
                     #{a.applicantId()}
