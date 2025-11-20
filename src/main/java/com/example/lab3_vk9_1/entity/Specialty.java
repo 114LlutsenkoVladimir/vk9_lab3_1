@@ -31,4 +31,8 @@ public class Specialty {
         this.name = name;
     }
 
+    public void copy(Specialty specialty) {
+        this.name = specialty.getName();
+    }
+
 }

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Specialty Form</title>
+    <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+
+<h:body>
+
+    <div class="forms-row">
+
+        <!-- CREATE -->
+        <h:form id="createSpecialtyForm" styleClass="form-card">
+            <p:panelGrid columns="2"
+                         styleClass="form-grid"
+                         columnClasses="form-label,form-input">
+
+                <p:outputLabel for="createSpecialtyName" value="Назва спеціальності:" />
+                <p:inputText id="createSpecialtyName"
+                             value="#{specialtyBean.form.name}" />
+
+                <h:panelGroup />
+                <p:commandButton value="Create"
+                                 action="#{specialtyBean.createSpecialty()}"
+                                 process="@form"
+                                 update=":specialtyTableForm:dataTable"
+                                 styleClass="btn-primary" />
+            </p:panelGrid>
+        </h:form>
+
+
+        <!-- UPDATE -->
+        <h:form id="updateSpecialtyForm" styleClass="form-card">
+            <p:panelGrid columns="2"
+                         styleClass="form-grid"
+                         columnClasses="form-label,form-input">
+
+                <p:outputLabel for="updateSpecialtyId" value="ID:" />
+                <p:inputNumber id="updateSpecialtyId"
+                               value="#{specialtyBean.selectedSpecialtyId}"
+                               decimalPlaces="0"
+                               thousandSeparator="" />
+
+                <p:outputLabel for="updateSpecialtyName" value="New name:" />
+                <p:inputText id="updateSpecialtyName"
+                             value="#{specialtyBean.form.name}" />
+
+                <h:panelGroup />
+                <p:commandButton value="Update"
+                                 action="#{specialtyBean.updateSpecialty()}"
+                                 process="@form"
+                                 update=":specialtyTableForm:dataTable"
+                                 styleClass="btn-primary" />
+            </p:panelGrid>
+        </h:form>
+
+
+        <!-- FIND BY ID -->
+        <h:form id="findSpecialtyForm" styleClass="form-card">
+            <p:panelGrid columns="2"
+                         styleClass="form-grid-small"
+                         columnClasses="form-label,form-input">
+
+                <p:outputLabel for="findSpecialtyId" value="Specialty ID:" />
+                <p:inputNumber id="findSpecialtyId"
+                               value="#{specialtyBean.selectedSpecialtyId}"
+                               decimalPlaces="0"
+                               thousandSeparator="" />
+
+                <h:panelGroup />
+                <p:commandButton value="Find"
+                                 action="#{specialtyBean.findSpecialtyById()}"
+                                 process="@form"
+                                 update=":specialtyTableForm:dataTable"
+                                 styleClass="btn-primary" />
+            </p:panelGrid>
+        </h:form>
+
+
+        <!-- DELETE -->
+        <h:form id="deleteSpecialtyForm" styleClass="form-card">
+            <p:panelGrid columns="2"
+                         styleClass="form-grid-small"
+                         columnClasses="form-label,form-input">
+
+                <p:outputLabel for="deleteSpecialtyId" value="Delete ID:" />
+                <p:inputNumber id="deleteSpecialtyId"
+                               value="#{specialtyBean.selectedSpecialtyId}"
+                               decimalPlaces="0"
+                               thousandSeparator="" />
+
+                <h:panelGroup />
+                <p:commandButton value="Delete"
+                                 action="#{specialtyBean.deleteSpecialty()}"
+                                 process="@form"
+                                 update=":specialtyTableForm:dataTable"
+                                 styleClass="btn-primary" />
+            </p:panelGrid>
+        </h:form>
+
+    </div>
+
+
+    <!-- TABLE -->
+    <h:form id="specialtyTableForm">
+        <p:dataTable id="dataTable"
+                     value="#{specialtyBean.dataTableList}"
+                     var="s"
+                     styleClass="styled-table"
+                     rows="8"
+                     paginator="true"
+                     responsiveLayout="scroll">
+
+            <p:column headerText="ID">
+                #{s.id}
+            </p:column>
+
+            <p:column headerText="Name">
+                #{s.name}
+            </p:column>
+
+        </p:dataTable>
+    </h:form>
+
+</h:body>
+</html>
