@@ -3,6 +3,7 @@ package com.example.lab3_vk9_1.bean;
 import com.example.lab3_vk9_1.entity.Applicant;
 import com.example.lab3_vk9_1.entity.Specialty;
 import com.example.lab3_vk9_1.service.SpecialtyService;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -22,7 +23,14 @@ public class SpecialtyBean {
 
     private Long selectedSpecialtyId;
 
+    private String errorMessage = "";
+
     public SpecialtyBean() {
+    }
+
+    @PostConstruct
+    public void init() {
+        updateDataTable();
     }
 
     public Specialty getForm() {
@@ -35,6 +43,10 @@ public class SpecialtyBean {
 
     public SpecialtyService getSpecialtyService() {
         return specialtyService;
+    }
+
+    public Long getSelectedSpecialtyId() {
+        return selectedSpecialtyId;
     }
 
     public void setSelectedSpecialtyId(Long selectedSpecialtyId) {
@@ -61,14 +73,26 @@ public class SpecialtyBean {
         form = new Specialty();
     }
 
-    public void updateDataTableBySpecialtyId() {
+    public void updateDataTable() {
         dataTableList = specialtyService.findAll();
         selectedSpecialtyId = null;
     }
 
     public void deleteSpecialty() {
-        specialtyService.delete(selectedSpecialtyId);
-        updateDataTableBySpecialtyId();
+        try {
+            specialtyService.delete(selectedSpecialtyId);
+        } catch (RuntimeException e) {
+            errorMessage = e.getMessage();
+        }
+        updateDataTable();
         selectedSpecialtyId = null;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

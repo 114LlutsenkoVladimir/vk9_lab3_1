@@ -41,4 +41,5 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
             applicant.addSpecialty(sfa);
         }
     }
+
 }

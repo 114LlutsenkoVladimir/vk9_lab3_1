@@ -6,6 +6,12 @@ body {
     background-color: #f1f5f9;
 }
 
+.top-menu {
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+
 /* ===== РЯД С ФОРМАМИ СВЕРХУ ===== */
 
 .forms-row {
@@ -175,4 +181,10 @@ body {
 
 .form-grid-small .form-label {
     white-space: normal;
+}
+
+.error-text {
+    color: red;
+    padding-left: 20px;
+    font-size: 30px;
 }

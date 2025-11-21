@@ -8,4 +8,16 @@ public class SpecialtyRepository extends GenericRepository<Specialty, Long>{
     protected SpecialtyRepository() {
         super(Specialty.class);
     }
+
+    public boolean hasApplicants(Long specialtyId) {
+        Long count = em.createQuery("""
+        SELECT COUNT(sfa)
+        FROM SpecialtyForApplicant sfa
+        WHERE sfa.specialty.id = :id
+    """, Long.class)
+                .setParameter("id", specialtyId)
+                .getSingleResult();
+
+        return count > 0;
+    }
 }

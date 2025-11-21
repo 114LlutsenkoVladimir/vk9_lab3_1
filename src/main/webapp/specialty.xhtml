@@ -5,7 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
     <title>Specialty Form</title>
@@ -13,6 +14,7 @@
 </h:head>
 
 <h:body>
+    <ui:include src="/fragments/header.xhtml"/>
 
     <div class="forms-row">
 
@@ -97,15 +99,27 @@
                                thousandSeparator="" />
 
                 <h:panelGroup />
+
+
                 <p:commandButton value="Delete"
                                  action="#{specialtyBean.deleteSpecialty()}"
                                  process="@form"
-                                 update=":specialtyTableForm:dataTable"
+                                 update=":specialtyTableForm:dataTable :errorForm:errorPanel"
                                  styleClass="btn-primary" />
             </p:panelGrid>
         </h:form>
 
     </div>
+
+    <h:form id="errorForm">
+        <h:panelGroup id="errorPanel">
+            <h:outputText value="#{specialtyBean.errorMessage}"
+                          styleClass="error-text"
+                          rendered="#{not empty specialtyBean.errorMessage}"/>
+        </h:panelGroup>
+    </h:form>
+
+
 
 
     <!-- TABLE -->
@@ -113,10 +127,7 @@
         <p:dataTable id="dataTable"
                      value="#{specialtyBean.dataTableList}"
                      var="s"
-                     styleClass="styled-table"
-                     rows="8"
-                     paginator="true"
-                     responsiveLayout="scroll">
+                     styleClass="styled-table">
 
             <p:column headerText="ID">
                 #{s.id}
@@ -128,6 +139,7 @@
 
         </p:dataTable>
     </h:form>
+
 
 </h:body>
 </html>

@@ -3,6 +3,9 @@ package com.example.lab3_vk9_1.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "specialty")
 public class Specialty {
@@ -15,6 +18,9 @@ public class Specialty {
     @Column(name = "name", length = 50)
     private String name;
 
+    @OneToMany(mappedBy = "specialty", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<SpecialtyForApplicant> applicants = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -25,6 +31,14 @@ public class Specialty {
 
     public String getName() {
         return name;
+    }
+
+    public Set<SpecialtyForApplicant> getApplicants() {
+        return applicants;
+    }
+
+    public void setApplicants(Set<SpecialtyForApplicant> applicants) {
+        this.applicants = applicants;
     }
 
     public void setName(String name) {
